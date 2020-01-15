@@ -52,7 +52,6 @@ class MemoComponent extends React.Component<RouteComponentProps<IMatchParams>, I
         if (!memo)
             return <div>loading..</div>;
 
-        console.log('deleted: ', deleted);
         if (deleted)
             return <Redirect to={`/memo`} />;
 

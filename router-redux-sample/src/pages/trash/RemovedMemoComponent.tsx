@@ -61,8 +61,6 @@ class RemovedMemoComponent extends React.Component<RouteComponentProps<IMatchPar
         if (!memo)
             return <div>loading..</div>;
 
-        console.log('resotred: ', resotred);
-
         if (resotred)
             return <Redirect to={`/trash`} />;
 
