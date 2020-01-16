@@ -1,8 +1,16 @@
 import React from 'react';
 import Button from '../../components/Button';
 import { Redirect } from "react-router-dom";
-import { Memo } from "../../models";
-import { addMemo } from "../../api";
+import { Memo } from "../../models/memo";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { addMemo, IAddMemoAction } from "../actions/memo";
+import * as api from "../../api";
+
+interface INewMemoComponentProps
+{
+    addMemo(memo: Memo): IAddMemoAction;
+}
 
 interface INewMemoComponentState 
 {
@@ -10,9 +18,9 @@ interface INewMemoComponentState
     saved: boolean;
 }
 
-class NewMemoComponent extends React.Component<{}, INewMemoComponentState>
+class NewMemoComponent extends React.Component<INewMemoComponentProps, INewMemoComponentState>
 {
-    constructor(props: {})
+    constructor(props: INewMemoComponentProps)
     {
         super(props);
 
@@ -64,13 +72,13 @@ class NewMemoComponent extends React.Component<{}, INewMemoComponentState>
         if (!content)   
             return;
 
-        this.saveMemo({content});
-        this.redirectToMemo();
-    }
+        // TODO: 서버에 추가 요청
+        const newMemo = api.apiAddMemo({content});
+        
+        // store에 추가
+        this.props.addMemo(newMemo);
 
-    private saveMemo(memo: Memo): Memo
-    {
-        return addMemo(memo);
+        this.redirectToMemo();
     }
 
     private redirectToMemo()
@@ -81,4 +89,11 @@ class NewMemoComponent extends React.Component<{}, INewMemoComponentState>
     }
 }
 
-export default NewMemoComponent;
+const mapDispatchToProps = (dispatch: Dispatch) =>
+{
+    return {
+        addMemo: (memo: Memo) => dispatch(addMemo(memo))
+    };
+};
+
+export default connect(null, mapDispatchToProps)(NewMemoComponent);

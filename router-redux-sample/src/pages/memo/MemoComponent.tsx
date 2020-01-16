@@ -1,58 +1,52 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { RouteComponentProps, Redirect } from "react-router-dom";
-import { Memo } from "../../models";
-import { fetchMemo, deleteMemo } from "../../api";
+import { Memo } from "../../models/memo";
 import DateString from "../../components/DateString";
 import Button from "../../components/Button";
+import { connect } from "react-redux";
+import { IRootReducerState } from "../../reducers";
+import { Dispatch } from "redux";
+import * as api from "../../api";
+import { fetchMemo, IFetchMemoAction, deleteMemo, IDeleteMemoAction } from "../actions/memo";
 
 interface IMatchParams
 {
     id: string;
 }
 
-interface IMemoComponentState
+interface IMemoComponentProps
 {
-    memo?: Memo;
-    deleted: boolean;
+    memos: Memo[];
+    fetchMemo(memo: Memo): IFetchMemoAction;
+    deleteMemo(id: number): IDeleteMemoAction;
 }
 
-class MemoComponent extends React.Component<RouteComponentProps<IMatchParams>, IMemoComponentState>
+interface IMemoComponentState
 {
-    constructor(props: RouteComponentProps<IMatchParams>)
+    isMemoDeleted: boolean;
+}
+
+class MemoComponent extends React.Component<IMemoComponentProps & RouteComponentProps<IMatchParams>, IMemoComponentState>
+{
+    constructor(props: IMemoComponentProps & RouteComponentProps<IMatchParams>)
     {
         super(props);
 
         this.state =
         {
-            memo: undefined,
-            deleted: false
+            isMemoDeleted: false
         };
-    }    
-
-    public componentDidMount()
-    {
-        const { match } = this.props;
-        this.fetchData(match.params.id);
     }
-
-    public componentWillReceiveProps(nextProps: RouteComponentProps<IMatchParams>)
-    {
-        const { match } = this.props;
-        const id = nextProps.match.params.id;
-        const urlChanged = id !== match.params.id;
-
-        if (urlChanged)
-            this.fetchData(id);
-    }    
 
     public render(): JSX.Element
     {
-        const { memo, deleted } = this.state;
+        // console.log('MemoComponent this.props: ', this.props);
 
-        if (!memo)
-            return <div>loading..</div>;
+        const {match, memos} = this.props;
+        const memoId = parseInt(match.params.id);        
+        const memo = memos.find(memo => memo.id === memoId);
 
-        if (deleted)
+        if (this.state.isMemoDeleted || !memo)
             return <Redirect to={`/memo`} />;
 
         return (
@@ -70,25 +64,37 @@ class MemoComponent extends React.Component<RouteComponentProps<IMatchParams>, I
         )
     }
 
-    private fetchData(id: string): void
-    {
-        const memoId = parseInt(id);
-        const memo = fetchMemo(memoId);
-        this.setState({
-            memo
-        });
-    }
-
     private onDelete(): void
     {
-        const { match } = this.props;
+        const { match, deleteMemo } = this.props;
         const memoId = parseInt(match.params.id);
+
+        // TODO: 서버에 삭제 요청
+        api.apiDeleteMemo(memoId);
+
+        // store에서 삭제
         deleteMemo(memoId);
 
         this.setState({
-            deleted: true
+            isMemoDeleted: true
         });
     }
 }
 
-export default MemoComponent;
+const mapStateToProps = (state: IRootReducerState, props: RouteComponentProps<IMatchParams>) =>
+{
+    return {
+        memos: state.memoReducer.memos
+    }
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+{
+    return {
+        fetchMemo: (memo: Memo) => dispatch(fetchMemo(memo)),
+        deleteMemo: (id: number) => dispatch(deleteMemo(id))
+    };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(MemoComponent);

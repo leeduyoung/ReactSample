@@ -3,12 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Root from './routes/Root';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter } from "react-router-dom";
+import { createStore } from "redux";
+import rootReducer from "./reducers";
+import { Provider } from "react-redux";
+
+const store = createStore(
+    rootReducer,
+    (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 ReactDOM.render(
-    <BrowserRouter>
+    <Provider store={store}>
         <Root />
-    </BrowserRouter>, 
+    </Provider>, 
     document.getElementById('root')
 );
 
