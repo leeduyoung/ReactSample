@@ -1,0 +1,63 @@
+.video-upload-page-container {
+    max-width: 700px;
+    margin: 5rem auto;
+
+    .title {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .drop-zone-container {
+        display: flex;
+        justify-content: space-between;
+
+        .drop-zone {
+            width: 300px;
+            height: 240px;
+            border: 1px solid lightgray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    form {
+        
+        label {
+            display: block;
+            margin-top: 1.6rem;
+
+            p {
+                margin-bottom: 0;
+            }
+
+            input {
+                height: 3.2rem;
+            }
+
+            input, textarea {
+                width: 100%;
+                padding: 4px 11px;
+                color: rgba(0, 0, 0, 0.65);
+                font-size: 14px;
+                line-height: 1.5;
+                background-color: #fff;
+                background-image: none;
+                border: 1px solid #d9d9d9;
+                border-radius: 4px;                
+            }
+        }
+        
+        button {
+            margin-top: 1.6rem;
+            color: #fff;
+            background-color: #1890ff;
+            border-color: #1890ff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+            -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+            border-radius: 4px;
+            padding: 3px 8px;      
+        }
+    }
+}

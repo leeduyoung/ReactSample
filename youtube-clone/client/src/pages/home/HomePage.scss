@@ -1,0 +1,24 @@
+.home-page-container {
+    width: 85%;
+    margin: 3rem auto;
+
+    h2 {
+        font-size: 3rem;
+        opacity: .85;
+    }
+
+    hr {
+        border-top: 1px solid #e8e8e8;
+    }
+
+    .video-list {
+
+        .card-item {
+
+            .time {
+                text-align: right;
+                margin: 8px 0 0;
+            }
+        }
+    }
+}
