@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
 import { useForm } from "react-hook-form";
+import Demo from "./component/Demo";
+import Demo2 from "./component/Demo2";
 
 function App() {
 
@@ -9,6 +11,10 @@ function App() {
   const onSubmit = data => {
     console.log(data);
     setData(JSON.stringify(data));
+  };
+  
+  let data2 = {
+      name: "mango"
   };
 
   return (
@@ -48,6 +54,22 @@ function App() {
       }}>
         {data}
       </div>
+
+      <hr /><br />
+
+      {/* 왜 defaultValue는 setState로 갱신이 안되는걸까? */}
+      <div>
+        Demo 
+      </div>
+      <Demo data={{name: "leeduyoung"}}/>
+      <Demo data={data2}/>
+
+      <hr /><br />
+      <div>
+        Demo2
+      </div>
+      <Demo2 value={"leeduyoung"}/>
+
     </div>
   );
 }
