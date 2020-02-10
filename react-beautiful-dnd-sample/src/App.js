@@ -4,7 +4,7 @@ import DragAndDrop from "./components/DragAndDrop";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{display: "flex", justifyContent: "center"}}>
       <DragAndDrop />
     </div>
   );

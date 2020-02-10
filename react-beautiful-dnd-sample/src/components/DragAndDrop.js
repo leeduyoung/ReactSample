@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const DragAndDrop = () => {
-    const [items, setItems] = useState(getItems(10));
+    const [items, setItems] = useState(getItems(5));
     console.log(items);
 
     const onDragEnd = result => {
