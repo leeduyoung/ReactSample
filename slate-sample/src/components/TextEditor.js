@@ -23,11 +23,13 @@ const serialize = value => {
 // Define a deserializing function that takes a string and returns a value.
 const deserialize = string => {
     // Return a value array of children derived by splitting the string.
-    return string.split("\n").map(line => {
+    let ret = string.split("\n").map(line => {
         return {
             children: [{ text: line }]
         };
     });
+    console.log(ret);
+    return ret;
 };
 
 // TODO: using the bundle source
@@ -42,7 +44,14 @@ const TextEditor = () => {
 
     // Use our deserializing function to read the data from Local Storage.
     const [value, setValue] = useState(
-        deserialize(localStorage.getItem("content")) || ""
+        localStorage.getItem("content")
+            ? deserialize(localStorage.getItem("content"))
+            : [
+                {
+                    type: "paragraph",
+                    children: [{ text: "" }]
+                }
+            ]
     );
 
     const renderElement = useCallback(props => {
@@ -67,6 +76,7 @@ const TextEditor = () => {
                 console.log(value);
                 setValue(value);
 
+                console.log(serialize(value))
                 localStorage.setItem("content", serialize(value));
             }}
         >
@@ -93,6 +103,9 @@ const TextEditor = () => {
                 // Pass in the `renderLeaf` function.
                 renderLeaf={renderLeaf}
                 onKeyDown={event => {
+                    console.log('event.key: ', event.key)
+                    console.log('event.ctrlKey: ', event.ctrlKey)
+                    
                     if (!event.ctrlKey) {
                         return;
                     }
