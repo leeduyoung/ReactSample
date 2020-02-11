@@ -62,7 +62,7 @@ const RichTextExample = () => {
                 setValue(value);
 
                 console.log('value: ', value);
-                // console.log('serialize output: ', serialize({children: [...value]}));
+                console.log('serialize output: ', serialize({children: [...value]}));
             }}
         >
             <Toolbar>
@@ -169,7 +169,7 @@ const Element = ({ attributes, children, element }) => {
             case "numbered-list":
                 return <ol {...attributes} className={align}>{children}</ol>;
             default:
-                return <p {...attributes} className={align}>{children}</p>;
+                return <p {...attributes} style={{textAlign: "right"}} className={align}>{children}</p>;
         }        
     }
 
