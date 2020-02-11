@@ -15,6 +15,9 @@ import {
     FormatListNumbered,
     Code,
     Image,
+    FormatAlignLeft,
+    FormatAlignCenter,
+    FormatAlignRight,
 } from "@material-ui/icons";
 import escapeHtml from "escape-html";
 import isUrl from "is-url";
@@ -34,6 +37,8 @@ const RichTextExample = () => {
     const renderElement = useCallback(
         props => {
 
+            // console.log('props: ', props);
+
             switch (props.element.type) {
                 case 'image':
                     return <ImageElement {...props} />;
@@ -48,7 +53,6 @@ const RichTextExample = () => {
         return <Leaf {...props} />;
     }, []);
     const editor = useMemo(() => withImages(withHistory(withReact(createEditor()))), []);
-    console.log('editor: ', editor);
 
     return (
         <Slate
@@ -58,7 +62,7 @@ const RichTextExample = () => {
                 setValue(value);
 
                 console.log('value: ', value);
-                console.log('serialize output: ', serialize({children: [...value]}));
+                // console.log('serialize output: ', serialize({children: [...value]}));
             }}
         >
             <Toolbar>
@@ -75,9 +79,21 @@ const RichTextExample = () => {
                 <BlockButon format="image">
                     <Image />
                 </BlockButon>
+
+                {/* TEXT ALIGN */}
+                <BlockButon format="align-left">
+                    <FormatAlignLeft />
+                </BlockButon>
+                <BlockButon format="align-center">
+                    <FormatAlignCenter />
+                </BlockButon>
+                <BlockButon format="align-right">
+                    <FormatAlignRight />
+                </BlockButon>
             </Toolbar>
 
             <Editable
+                className={"markdown-body"}
                 renderElement={renderElement}
                 renderLeaf={renderLeaf}
                 placeholder={"Write here..."}
@@ -131,11 +147,32 @@ const withImages = editor => {
             insertData(data);
         }
     }
-    console.log('withImages editor: ', editor)
     return editor;
 }
 
 const Element = ({ attributes, children, element }) => {
+
+    if (element.data && element.data.align)
+    {
+        const align = element.data.align;
+        switch (element.type) {
+            case "block-quote":
+                return <blockquote {...attributes} className={align}>{children}</blockquote>;
+            case "bulleted-list":
+                return <ul {...attributes} className={align}>{children}</ul>;
+            case "heading-one":
+                return <h1 {...attributes} className={align}>{children}</h1>;
+            case "heading-two":
+                return <h2 {...attributes} className={align}>{children}</h2>;
+            case "list-item":
+                return <li {...attributes} className={align}>{children}</li>;
+            case "numbered-list":
+                return <ol {...attributes} className={align}>{children}</ol>;
+            default:
+                return <p {...attributes} className={align}>{children}</p>;
+        }        
+    }
+
     switch (element.type) {
         case "block-quote":
             return <blockquote {...attributes}>{children}</blockquote>;
@@ -223,9 +260,11 @@ const MarkButton = ({ format, children }) => {
 
 const isBlockActive = (editor, format) => {
     const [match] = Editor.nodes(editor, {
-        match: n => n.type === format
+        // match의 파라미터로 현재 선택된 곳의 노드 리스트가 들어온다.
+        match: n => {
+            return n.type === format
+        }
     });
-
     return !!match;
 };
 
@@ -233,19 +272,38 @@ const toggleBlock = (editor, format) => {
     const isActive = isBlockActive(editor, format);
     const isList = LIST_TYPES.includes(format);
 
+    /**
+     * list로 된 노드들을 해체한다.
+     */
     Transforms.unwrapNodes(editor, {
-        match: n => LIST_TYPES.includes(n.type),
+        match: n => {
+            console.log('n: ', n);
+            return LIST_TYPES.includes(n.type)
+        },
         split: true
     });
 
     Transforms.setNodes(editor, {
-        type: isActive ? "paragraph" : isList ? "list-item" : format
+        type: isActive 
+            ? "paragraph" 
+            : isList 
+                ? "list-item" 
+                : format
     });
 
+    /**
+     * none active + list를 선택한 경우
+     * 새로운 block을 만들어서 add
+     */
     if (!isActive && isList) {
         const block = { type: format, children: [] };
         Transforms.wrapNodes(editor, block);
     }
+};
+const setTextAlign = (editor, format) => {
+    Transforms.setNodes(editor, {
+        data: {align: format}
+    });
 };
 
 const isImageURL = url => {
@@ -272,6 +330,12 @@ const BlockButon = ({ format, children }) => {
         <IconButton
             onMouseDown={event => {
                 event.preventDefault();
+
+                if (format.includes("align"))
+                {
+                    setTextAlign(editor, format);
+                    return;
+                }
 
                 if (format === "image")
                 {
@@ -323,8 +387,18 @@ const initialValue = [
     },
     {
         type: "paragraph",
+        data: {
+            align: "align-center",
+        },
         children: [{ text: "Try it out for yourself!" }]
-    }
+    },
+    {
+        type: "paragraph",
+        // data: {
+        //     align: "center",
+        // },
+        children: [{ text: "hello world!" }]
+    },
 ];
 
 const serialize = node => {
@@ -340,6 +414,7 @@ const serialize = node => {
 
     const children = node.children.map(n => serialize(n)).join("");
 
+    // console.log('node: ', node)
     switch (node.type) {
         case "block-quote":
             return `<blockquote>${children}</blockquote>`;
@@ -355,6 +430,10 @@ const serialize = node => {
             return `<ol>${children}</ol>`;
         case "paragraph":
             return `<p>${children}</p>`;
+        case "image":
+            // return `<img src=${node.url} alt=""
+            //             style="display: block; max-width: 100%; max-height: 20em"/>`;
+            return `<img src=${node.url} alt=""/>`;
         default:
             return children;
     }
