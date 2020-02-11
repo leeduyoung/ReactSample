@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import isHotkey from "is-hotkey";
-import { Editable, withReact, useSlate, Slate } from "slate-react";
+import { Editable, withReact, useSlate, Slate, useSelected, useFocused } from "slate-react";
 import { Editor, Transforms, createEditor, Text } from "slate";
 import { withHistory } from "slate-history";
 import { Toolbar, IconButton, Icon } from "@material-ui/core";
@@ -14,9 +14,11 @@ import {
     FormatListBulleted,
     FormatListNumbered,
     Code,
-    Image
+    Image,
 } from "@material-ui/icons";
 import escapeHtml from "escape-html";
+import isUrl from "is-url";
+import imageExtensions from "image-extensions";
 
 const HOTKEYS = {
     "mod+b": "bold",
@@ -29,15 +31,24 @@ const LIST_TYPES = ["numbered-list", "bulleted-list"];
 
 const RichTextExample = () => {
     const [value, setValue] = useState(initialValue);
-    const renderElement = useCallback(props => {
-        return <Element {...props} />;
-    }, []);
+    const renderElement = useCallback(
+        props => {
+
+            switch (props.element.type) {
+                case 'image':
+                    return <ImageElement {...props} />;
+                default:
+                    return <Element {...props} />;
+            }
+        }, 
+        []
+    );
 
     const renderLeaf = useCallback(props => {
         return <Leaf {...props} />;
     }, []);
-    const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-    console.log(editor);
+    const editor = useMemo(() => withImages(withHistory(withReact(createEditor()))), []);
+    console.log('editor: ', editor);
 
     return (
         <Slate
@@ -46,8 +57,8 @@ const RichTextExample = () => {
             onChange={value => {
                 setValue(value);
 
-                console.log(value);
-                console.log(serialize({children: [...value]}));
+                console.log('value: ', value);
+                console.log('serialize output: ', serialize({children: [...value]}));
             }}
         >
             <Toolbar>
@@ -60,6 +71,9 @@ const RichTextExample = () => {
                 </BlockButon>
                 <BlockButon format="numbered-list">
                     <FormatListNumbered />
+                </BlockButon>
+                <BlockButon format="image">
+                    <Image />
                 </BlockButon>
             </Toolbar>
 
@@ -84,6 +98,43 @@ const RichTextExample = () => {
 
 export default RichTextExample;
 
+const withImages = editor => {
+    const { insertData, isVoid } = editor;
+
+    editor.isVoid = element => {
+        return element.type === 'image' ? true : isVoid(element);
+    }
+
+    editor.insertData = data => {
+        const text = data.getData("text/plain");
+        const { files } = data;
+
+        if (files && files.length > 0) {
+            for (const file of files) {
+                const reader = new FileReader();
+                const [mime] = file.type.split("/");
+    
+                if (mime === "image") {
+                    reader.addEventListener("load", () => {
+                        const url = reader.result;
+                        insertImage(editor, url);
+                    });
+    
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+        else if (isImageURL(text)) {
+            insertImage(editor, text);
+        }
+        else {
+            insertData(data);
+        }
+    }
+    console.log('withImages editor: ', editor)
+    return editor;
+}
+
 const Element = ({ attributes, children, element }) => {
     switch (element.type) {
         case "block-quote":
@@ -101,6 +152,24 @@ const Element = ({ attributes, children, element }) => {
         default:
             return <p {...attributes}>{children}</p>;
     }
+};
+
+const ImageElement = ({ attributes, children, element }) => {
+    const selected = useSelected();
+    const focused = useFocused();
+
+    return (
+        <div {...attributes}>
+            <div contentEditable={false}>
+                <img src={element.url}
+                    style={{display: "block", 
+                        maxWidth: "100%", 
+                        maxHeight: "20em", 
+                        boxShadow: `${selected && focused ? '0 0 0 3px #B4D5FF' : 'none'}`}}/>
+            </div>
+            {children}
+        </div>
+    )
 };
 
 const Leaf = ({ attributes, children, leaf }) => {
@@ -153,12 +222,9 @@ const MarkButton = ({ format, children }) => {
 };
 
 const isBlockActive = (editor, format) => {
-    console.log("editor: ", editor);
-    console.log("format: ", format);
     const [match] = Editor.nodes(editor, {
         match: n => n.type === format
     });
-    console.log("match: ", match);
 
     return !!match;
 };
@@ -182,6 +248,23 @@ const toggleBlock = (editor, format) => {
     }
 };
 
+const isImageURL = url => {
+    if (!url) return false;
+    if (!isUrl(url)) return false;
+    const ext = new URL(url).pathname.split('.').pop();
+    return imageExtensions.includes(ext);
+}
+
+const insertImage = (editor, url) => {
+    const text = { text: "" };
+    const image = { 
+        type: 'image', 
+        url, 
+        children: [text]
+    };
+    Transforms.insertNodes(editor, image);
+}
+
 const BlockButon = ({ format, children }) => {
     const editor = useSlate();
 
@@ -189,7 +272,17 @@ const BlockButon = ({ format, children }) => {
         <IconButton
             onMouseDown={event => {
                 event.preventDefault();
-                toggleBlock(editor, format);
+
+                if (format === "image")
+                {
+                    const url = window.prompt("Enter the URL of image: ");
+                    if (!url) return;
+                    insertImage(editor, url);
+                }
+                else
+                {
+                    toggleBlock(editor, format);
+                }
             }}
         >
             {children}
@@ -236,7 +329,6 @@ const initialValue = [
 
 const serialize = node => {
     // markdown to html
-    console.log('serialize: ', node);
     
     if (Text.isText(node)) {
         if (node.bold) return `<strong>${escapeHtml(node.text)}</strong>`;
