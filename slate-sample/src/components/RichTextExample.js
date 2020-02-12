@@ -169,7 +169,7 @@ const Element = ({ attributes, children, element }) => {
             case "numbered-list":
                 return <ol {...attributes} className={align}>{children}</ol>;
             default:
-                return <p {...attributes} style={{textAlign: "right"}} className={align}>{children}</p>;
+                return <p {...attributes} className={align}>{children}</p>;
         }        
     }
 
@@ -414,27 +414,69 @@ const serialize = node => {
 
     const children = node.children.map(n => serialize(n)).join("");
 
-    // console.log('node: ', node)
-    switch (node.type) {
-        case "block-quote":
-            return `<blockquote>${children}</blockquote>`;
-        case "bulleted-list":
-            return `<ul>${children}</ul>`;
-        case "heading-one":
-            return `<h1>${children}</h1>`;
-        case "heading-two":
-            return `<h>${children}</h2>`;
-        case "list-item":
-            return `<li>${children}</li>`;
-        case "numbered-list":
-            return `<ol>${children}</ol>`;
-        case "paragraph":
-            return `<p>${children}</p>`;
-        case "image":
-            // return `<img src=${node.url} alt=""
-            //             style="display: block; max-width: 100%; max-height: 20em"/>`;
-            return `<img src=${node.url} alt=""/>`;
-        default:
-            return children;
-    }
+    // if (node.data && node.data.align)
+    // {
+        console.log(node)
+        const align = node.data && node.data.align;
+        switch (node.type) {
+            case "block-quote":
+                return align
+                    ? `<blockquote class="${align}">${children}</blockquote>`
+                    : `<blockquote>${children}</blockquote>`;
+            case "bulleted-list":
+                return align
+                    ? `<ul class="${align}">${children}</ul>`
+                    : `<ul>${children}</ul>`;
+            case "heading-one":
+                return align
+                    ? `<h1 class="${align}">${children}</h1>`
+                    : `<h1>${children}</h1>`;
+            case "heading-two":
+                return align
+                    ? `<h class="${align}">${children}</h2>`
+                    : `<h>${children}</h2>`;
+            case "list-item":
+                return align
+                    ? `<li class="${align}">${children}</li>`
+                    : `<li>${children}</li>`;
+            case "numbered-list":
+                return align
+                    ? `<ol class="${align}">${children}</ol>`
+                    : `<ol>${children}</ol>`;
+            case "paragraph":
+                return align
+                    ? `<p class="${align}">${children}</p>`
+                    : `<p>${children}</p>`;
+            case "image":
+                // return `<img src=${node.url} alt=""
+                //             style="display: block; max-width: 100%; max-height: 20em"/>`;
+                return align
+                    ? `<img src=${node.url} alt="" class="${align}"/>`
+                    : `<img src=${node.url} alt=""/>`
+            default:
+                return children;
+        }      
+    // }
+    // switch (node.type) {
+    //     case "block-quote":
+    //         return `<blockquote>${children}</blockquote>`;
+    //     case "bulleted-list":
+    //         return `<ul>${children}</ul>`;
+    //     case "heading-one":
+    //         return `<h1>${children}</h1>`;
+    //     case "heading-two":
+    //         return `<h>${children}</h2>`;
+    //     case "list-item":
+    //         return `<li>${children}</li>`;
+    //     case "numbered-list":
+    //         return `<ol>${children}</ol>`;
+    //     case "paragraph":
+    //         return `<p>${children}</p>`;
+    //     case "image":
+    //         // return `<img src=${node.url} alt=""
+    //         //             style="display: block; max-width: 100%; max-height: 20em"/>`;
+    //         return `<img src=${node.url} alt=""/>`;
+    //     default:
+    //         return children;
+    // }
 };
