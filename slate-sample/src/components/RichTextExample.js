@@ -61,8 +61,13 @@ const RichTextExample = () => {
             onChange={value => {
                 setValue(value);
 
+                /**
+                 * value.node.type === "image"를 확인하고
+                 * 현재 관리되고 있는 upload image 배열의 값중 삭제된 이미지가 있다면
+                 * 삭제 처리한다.
+                 */
                 console.log('value: ', value);
-                console.log('serialize output: ', serialize({children: [...value]}));
+                // console.log('serialize output: ', serialize({children: [...value]}));
             }}
         >
             <Toolbar>
