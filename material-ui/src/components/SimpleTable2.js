@@ -57,7 +57,7 @@ export default function SimpleTable2() {
         </TableHead>
 
         <TableBody>
-          <TableRow key={rows[0].name}>
+          <TableRow key={"0"}>
             <TableCell component="th" scope="row" rowSpan={2}>
               {rows[0].name}
             </TableCell>
@@ -70,11 +70,11 @@ export default function SimpleTable2() {
             <TableCell align="center">{rows[0].options[0].carbs}</TableCell>
           </TableRow>
 
-          <TableRow key={rows[0].name}>
+          <TableRow key={"1"}>
             <TableCell align="center">{rows[0].options[1].carbs}</TableCell>
           </TableRow>
 
-          <TableRow key={rows[1].name}>
+          <TableRow key={"2"}>
             <TableCell component="th" scope="row">
               {rows[1].name}
             </TableCell>
@@ -83,7 +83,7 @@ export default function SimpleTable2() {
             <TableCell align="center">{rows[1].options[0].carbs}</TableCell>
           </TableRow>
 
-          <TableRow key={rows[2].name}>
+          <TableRow key={"3"}>
             <TableCell component="th" scope="row">
               {rows[2].name}
             </TableCell>
@@ -92,7 +92,7 @@ export default function SimpleTable2() {
             <TableCell align="center">{rows[2].options[0].carbs}</TableCell>
           </TableRow>
 
-          <TableRow key={rows[3].name}>
+          <TableRow key={"4"}>
             <TableCell component="th" scope="row">
               {rows[3].name}
             </TableCell>

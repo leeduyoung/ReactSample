@@ -23,7 +23,7 @@ const rows = [
   {
     name: "Frozen yoghurt",
     calories: 111,
-    options: [{ carbs: 50 }]
+    options: [{ carbs: 50 }, {carbs: 60}, {carbs: 70}]
   }
 ];
 
@@ -41,20 +41,28 @@ export default function SimpleTable3() {
         </TableHead>
 
         <TableBody>
-          <TableRow key={rows[0].name}>
+          <TableRow key={0}>
             <TableCell align="center" rowSpan={2}>
               {rows[0].calories}
             </TableCell>
             <TableCell align="center">{rows[0].options[0].carbs}</TableCell>
           </TableRow>
 
-          <TableRow key={rows[1].name}>
+          <TableRow key={1}>
             <TableCell align="center">{rows[0].options[1].carbs}</TableCell>
           </TableRow>
 
-          <TableRow key={rows[1].name}>
-            <TableCell align="center">{rows[1].calories}</TableCell>
+          <TableRow key={2}>
+            <TableCell align="center" rowSpan={3}>{rows[1].calories}</TableCell>
             <TableCell align="center">{rows[1].options[0].carbs}</TableCell>
+          </TableRow>
+
+          <TableRow key={3}>
+            <TableCell align="center">{rows[1].options[1].carbs}</TableCell>
+          </TableRow>
+
+          <TableRow key={4}>
+            <TableCell align="center">{rows[1].options[2].carbs}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
