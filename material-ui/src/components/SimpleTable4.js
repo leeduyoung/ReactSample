@@ -45,18 +45,38 @@ const rows = [
   }
 ];
 
+const columns = [
+  { id: "Dessert (100g serving)", label: "Dessert (100g serving)", align: "center" },
+  { id: "Calories", label: "Calories", align: "center" },
+  { id: "Fat (g)", label: "Fat (g)", align: "center" },
+  { id: "carbs", label: "carbs", align: "center" },
+]
+
+const map = new Map([
+  [0, "name"],
+  [1, "calories"],
+  [2, "fat"],
+  [3, "carbs"],
+])
+
 export default function SimpleTable4() {
   const classes = useStyles();
+  const columnCount = 4;
 
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
+            {columns.map((column, index) => {
+              return (
+                <TableCell key={index}>{column.label}</TableCell>
+              )
+            })}
+            {/* <TableCell>Dessert (100g serving)</TableCell>
             <TableCell align="center">Calories</TableCell>
             <TableCell align="center">Fat&nbsp;(g)</TableCell>
-            <TableCell align="center">carbs</TableCell>
+            <TableCell align="center">carbs</TableCell> */}
           </TableRow>
         </TableHead>
 
@@ -100,7 +120,17 @@ export default function SimpleTable4() {
 
             return (
               <TableRow key={row.id}>
-                <TableCell>
+                {columns.map((column, index) => {
+
+                  // TODO: 
+
+                  return (
+                    <TableCell key={index}>
+                      {row[map.get(index)]}
+                    </TableCell>
+                  )
+                })}
+                {/* <TableCell>
                   {row.name}
                 </TableCell>
                 <TableCell>
@@ -111,7 +141,7 @@ export default function SimpleTable4() {
                 </TableCell>
                 <TableCell>
                   {row.options[0].carbs}
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             )
           })}
