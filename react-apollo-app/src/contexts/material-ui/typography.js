@@ -1,6 +1,7 @@
 import palette from "./palette";
 
 export default {
+  htmlFontSize: 10,
   fontFamily: [
     "-apple-system",
     "BlinkMacSystemFont",
