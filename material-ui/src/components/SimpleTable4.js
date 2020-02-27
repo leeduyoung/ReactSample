@@ -46,18 +46,22 @@ const rows = [
 ];
 
 const columns = [
-  { id: "Dessert (100g serving)", label: "Dessert (100g serving)", align: "center" },
+  {
+    id: "Dessert (100g serving)",
+    label: "Dessert (100g serving)",
+    align: "center"
+  },
   { id: "Calories", label: "Calories", align: "center" },
   { id: "Fat (g)", label: "Fat (g)", align: "center" },
-  { id: "carbs", label: "carbs", align: "center" },
-]
+  { id: "carbs", label: "carbs", align: "center" }
+];
 
 const map = new Map([
   [0, "name"],
   [1, "calories"],
   [2, "fat"],
-  [3, "carbs"],
-])
+  [3, "carbs"]
+]);
 
 export default function SimpleTable4() {
   const classes = useStyles();
@@ -69,9 +73,7 @@ export default function SimpleTable4() {
         <TableHead>
           <TableRow>
             {columns.map((column, index) => {
-              return (
-                <TableCell key={index}>{column.label}</TableCell>
-              )
+              return <TableCell key={index}>{column.label}</TableCell>;
             })}
             {/* <TableCell>Dessert (100g serving)</TableCell>
             <TableCell align="center">Calories</TableCell>
@@ -82,68 +84,40 @@ export default function SimpleTable4() {
 
         <TableBody>
           {rows.map((row, index) => {
-
-            let optionLength = row.options.length
+            let optionLength = row.options.length;
             if (optionLength > 1) {
-
-              let addTableRow = []
+              let addTableRow = [];
               for (let i = 1; i < optionLength; i++) {
-                console.log(row.options[i].carbs)
-                addTableRow.push((
+                console.log(row.options[i].carbs);
+                addTableRow.push(
                   <TableRow key={i}>
                     <TableCell>{row.options[i].carbs}</TableCell>
                   </TableRow>
-                ))
+                );
               }
-              console.log(addTableRow)
+              console.log(addTableRow);
 
               return (
                 <React.Fragment key={index}>
                   <TableRow key={row.id}>
-                    <TableCell rowSpan={optionLength}>
-                      {row.name}
-                    </TableCell>
-                    <TableCell rowSpan={optionLength}>
-                      {row.calories}
-                    </TableCell>
-                    <TableCell rowSpan={optionLength}>
-                      {row.fat}
-                    </TableCell>
-                    <TableCell>
-                      {row.options[0].carbs}
-                    </TableCell>
+                    <TableCell rowSpan={optionLength}>{row.name}</TableCell>
+                    <TableCell rowSpan={optionLength}>{row.calories}</TableCell>
+                    <TableCell rowSpan={optionLength}>{row.fat}</TableCell>
+                    <TableCell>{row.options[0].carbs}</TableCell>
                   </TableRow>
                   {addTableRow}
                 </React.Fragment>
-              )
+              );
             }
 
             return (
               <TableRow key={row.id}>
-                {columns.map((column, index) => {
-
-                  // TODO: 
-
-                  return (
-                    <TableCell key={index}>
-                      {row[map.get(index)]}
-                    </TableCell>
-                  )
-                })}
-                {/* <TableCell>
-                  {row.name}
-                </TableCell>
-                <TableCell>
-                  {row.calories}
-                </TableCell>
-                <TableCell>
-                  {row.fat}
-                </TableCell>
-                <TableCell>
-                  {row.options[0].carbs}
-                </TableCell> */}
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.calories}</TableCell>
+                <TableCell>{row.fat}</TableCell>
+                <TableCell>{row.options[0].carbs}</TableCell>
               </TableRow>
-            )
+            );
           })}
         </TableBody>
       </Table>
