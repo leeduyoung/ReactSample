@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { CATEGORY_QUERY } from "../queries/category";
 import { Button, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   rootContainer: {
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 function Home() {
   const classes = useStyles();
   const { loading, error, data } = useQuery(CATEGORY_QUERY);
+  const history = useHistory();
 
   if (loading) return <p>loading...</p>;
   if (error) return <p>error :(</p>;
@@ -29,7 +31,7 @@ function Home() {
           {category.id}: {category.name}
         </div>
       ))}
-      <Button>hello world!</Button>
+      <Button onClick={() => history.push('/post')}>Go Post Page</Button>
     </div>
   );
 }

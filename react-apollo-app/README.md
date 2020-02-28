@@ -11,3 +11,5 @@ In the project directory, you can run:
 ### `2. Material-ui settings`
 
 ### `3. Router settings`
+
+### `4. React-router-config settings`
