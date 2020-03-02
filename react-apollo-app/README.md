@@ -1,8 +1,8 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React + GraphQL base의 BackOffice 프로젝트입니다.
 
-## Available Scripts
+## 프로젝트 작업 내용
 
-In the project directory, you can run:
+프로젝트에서 사용한 기술들 목록입니다.
 
 ### `0. Prettier settings`
 
