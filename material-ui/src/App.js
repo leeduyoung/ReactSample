@@ -5,6 +5,7 @@ import SimpleTable from "./components/SimpleTable";
 import SimpleTable2 from "./components/SimpleTable2";
 import SimpleTable3 from "./components/SimpleTable3";
 import SimpleTable4 from "./components/SimpleTable4";
+import CustomTransferList from "./components/transfer-list/CustomTransferList";
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
         <h2>SIMPLE TABLE4</h2>
         <SimpleTable4 />
       </div>
+
+      <CustomTransferList />
     </div>
   );
 }

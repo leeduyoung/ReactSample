@@ -56,16 +56,9 @@ const columns = [
   { id: "carbs", label: "carbs", align: "center" }
 ];
 
-const map = new Map([
-  [0, "name"],
-  [1, "calories"],
-  [2, "fat"],
-  [3, "carbs"]
-]);
-
 export default function SimpleTable4() {
   const classes = useStyles();
-  const columnCount = 4;
+  // const columnCount = 4;
 
   return (
     <TableContainer component={Paper}>
