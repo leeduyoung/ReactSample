@@ -1,9 +1,21 @@
 import React from "react";
-import { Grid, makeStyles, Button, Divider, List, ListItem, ListItemIcon, Checkbox, Card, CardHeader, ListItemText } from "@material-ui/core";
+import {
+  Grid,
+  makeStyles,
+  Button,
+  Divider,
+  List,
+  ListItem,
+  ListItemIcon,
+  Checkbox,
+  Card,
+  CardHeader,
+  ListItemText,
+} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: 'auto',
+    margin: "auto",
   },
   cardHeader: {
     padding: theme.spacing(1, 2),
@@ -12,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     width: 200,
     height: 230,
     backgroundColor: theme.palette.background.paper,
-    overflow: 'auto',
+    overflow: "auto",
   },
   button: {
     margin: theme.spacing(0.5, 0),
@@ -38,26 +50,23 @@ const CustomTransferList = () => {
   const [right, setRight] = React.useState([]);
 
   const leftChecked = intersection(checked, left);
-  const rightChecked = intersection(checked, right);  
+  const rightChecked = intersection(checked, right);
 
-  const handleToggle = (value) => {
-    const currentIndex = checked.indexOf(value)
+  const handleToggle = value => {
+    const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
-    if (currentIndex === -1)
-      newChecked.push(value);
-    else
-      newChecked.splice(currentIndex, 1);
+    if (currentIndex === -1) newChecked.push(value);
+    else newChecked.splice(currentIndex, 1);
 
     setChecked(newChecked);
-  }  
+  };
 
-  const handleToggleAll = (items) => {
+  const handleToggleAll = items => {
     if (numberOfChecked(items) === items.length)
       setChecked(not(checked, items));
-    else
-      setChecked(union(checked, items));
-  }
+    else setChecked(union(checked, items));
+  };
 
   const handleCheckedRight = () => {
     setRight(right.concat(leftChecked));
@@ -69,25 +78,28 @@ const CustomTransferList = () => {
     setLeft(left.concat(rightChecked));
     setRight(not(right, rightChecked));
     setChecked(not(checked, rightChecked));
-  };  
+  };
 
   const numberOfChecked = items => intersection(checked, items).length;
 
   const customerList = (title, items) => {
     return (
       <Card>
-        <CardHeader 
+        <CardHeader
           className={classes.cardHeader}
           avatar={
-            <Checkbox 
+            <Checkbox
               onClick={() => handleToggleAll(items)}
+              checked={
+                numberOfChecked(items) === items.length && items.length !== 0
+              }
               disabled={items.length === 0}
             />
           }
           title={title}
           subheader={`${numberOfChecked(items)}/${items.length} 선택 됨`}
         />
-        
+
         <Divider />
 
         <List className={classes.list} component={"div"} role={"list"}>
@@ -95,30 +107,40 @@ const CustomTransferList = () => {
             const labelId = `transfer-list-all-item-${value}-label`;
 
             return (
-              <ListItem key={value} role="listitem" button onClick={() => handleToggle(value)}>
+              <ListItem
+                key={value}
+                role="listitem"
+                button
+                onClick={() => handleToggle(value)}
+              >
                 <ListItemIcon>
-                  <Checkbox 
+                  <Checkbox
                     checked={checked.indexOf(value) !== -1}
                     tabIndex={-1}
-                    inputProps={{ 'aria-labelledby': labelId }}
+                    disableRipple
                   />
-                </ListItemIcon>               
+                </ListItemIcon>
                 <ListItemText id={labelId} primary={`List item ${value + 1}`} />
               </ListItem>
-            )
+            );
           })}
         </List>
       </Card>
-    )
-  }
+    );
+  };
 
   return (
-    <Grid container spacing={2} justify="center" alignItems="center" className={classes.root}>
-      <Grid item>
+    <Grid
+      container
+      // justify="center"
+      alignItems="center"
+      className={classes.root}
+    >
+      <Grid item xs={5}>
         {customerList("상품 목록", left)}
       </Grid>
 
-      <Grid item>
+      <Grid item xs={2}>
         <Grid container direction="column" alignItems="center">
           <Button
             variant="outlined"
@@ -139,15 +161,15 @@ const CustomTransferList = () => {
             aria-label="move selected left"
           >
             &lt;
-          </Button>     
-        </Grid>     
-      </Grid>      
+          </Button>
+        </Grid>
+      </Grid>
 
-      <Grid item>
+      <Grid item xs={5}>
         {customerList("선택된 상품 목록", right)}
-      </Grid>      
+      </Grid>
     </Grid>
-  )
-}
+  );
+};
 
 export default CustomTransferList;
