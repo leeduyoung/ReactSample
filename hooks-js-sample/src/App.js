@@ -19,12 +19,12 @@ function App() {
   };
 
   return (
-    <div className="App" style={{ margin: 60 }}>
+    <div className="App">
       <Post createMode={false} postData={postData} onSubmit={onSubmit} />
-
       <hr />
-
       <Post createMode={true} postData={null} onSubmit={onSubmit} />
+      <hr />
+      <div className="bottom">아래영역</div>
     </div>
   );
 }
