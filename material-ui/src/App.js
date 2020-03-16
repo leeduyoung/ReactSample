@@ -1,14 +1,17 @@
 import React from "react";
 import "./App.css";
-import { CssBaseline } from "@material-ui/core";
+import { CssBaseline, Button } from "@material-ui/core";
 import SimpleTable from "./components/SimpleTable";
 import SimpleTable2 from "./components/SimpleTable2";
 import SimpleTable3 from "./components/SimpleTable3";
 import SimpleTable4 from "./components/SimpleTable4";
 import CustomTransferList from "./components/transfer-list/CustomTransferList";
 import TransferList from "./components/transfer-list/TransferList";
+import TestModal from "./components/layout/TestModal";
 
 function App() {
+  const [testModal, setTestModal] = React.useState(true)
+
   return (
     <div className="App">
       <div style={{ width: 850 }}>
@@ -37,6 +40,16 @@ function App() {
       </div>
 
       <TransferList />
+
+      <br />
+
+      <Button variant="contained" onClick={() => setTestModal(true)}>
+        OPEN TEST MODAL
+      </Button>
+      <TestModal 
+        open={testModal}
+        onClose={() => setTestModal(false)}
+      />
     </div>
   );
 }
