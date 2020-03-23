@@ -4,7 +4,7 @@ import config from "../../configs/config";
 import { ApolloProvider } from "@apollo/react-hooks";
 
 const client = new ApolloClient({
-  uri: config.apiUrl
+  uri: config.apiUrl,
 });
 
 const Apollo = ({ children }) => {
