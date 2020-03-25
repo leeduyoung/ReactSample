@@ -4,6 +4,7 @@ import DoughnutComponent from "./components/DoughnutComponent";
 import LineComponent from "./components/LineComponent";
 import ScatterComponent from "./components/ScatterComponent";
 import BubbleComponent from "./components/BubbleComponent";
+import BarComponent from "./components/BarComponent";
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
       </div>
       <div style={{ width: 800, height: 400 }}>
         <BubbleComponent />
+      </div>
+      <div style={{ width: 800, height: 400 }}>
+        <BarComponent />
       </div>
     </div>
   );
