@@ -4,12 +4,13 @@ import Header from "./layouts/Header";
 import Home from "./pages/home/Home";
 import CreateProduct from "./pages/create-product/CreateProduct";
 import TooltipComponent from "./pages/tooltip/Tooltip";
+import TableComponent from "./pages/table/Table";
 
 export default [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/home" />
+    component: () => <Redirect to="/home" />,
   },
   {
     route: "*",
@@ -18,20 +19,25 @@ export default [
       {
         path: "/home",
         exact: true,
-        component: Home
+        component: Home,
       },
       {
         path: "/create-product",
         exact: true,
-        component: CreateProduct
+        component: CreateProduct,
       },
       {
         path: "/tooltip",
         exact: true,
-        component: TooltipComponent
+        component: TooltipComponent,
       },
-    ]
-  }
+      {
+        path: "/table",
+        exact: true,
+        component: TableComponent,
+      },
+    ],
+  },
 ];
 
 // import React from "react";

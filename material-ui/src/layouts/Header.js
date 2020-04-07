@@ -19,6 +19,9 @@ const Header = ({ route }) => {
           <li>
             <Link to="/tooltip">Tooltip</Link>
           </li>
+          <li>
+            <Link to="/table">Table</Link>
+          </li>
         </ul>
       </nav>
 
