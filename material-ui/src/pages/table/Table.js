@@ -24,10 +24,16 @@ const TableComponent = () => {
 
           <TableBody>
             <TableRow>
-              <TableCell rowSpan={3}>111</TableCell>
-              <TableCell rowSpan={3}>222</TableCell>
-              <TableCell>33</TableCell>
+              <TableCell rowSpan={4}>111</TableCell>
+              <TableCell rowSpan={4}>222</TableCell>
+              <TableCell rowSpan={2}>33</TableCell>
               <TableCell>44</TableCell>
+            </TableRow>
+            <TableRow>
+              {/* TableCell */}
+              {/* TableCell */}
+              {/* TableCell */}
+              <TableCell>4444</TableCell>
             </TableRow>
             <TableRow>
               {/* TableCell */}
@@ -36,6 +42,9 @@ const TableComponent = () => {
               <TableCell>444</TableCell>
             </TableRow>
             <TableRow>
+              {/* TableCell */}
+              {/* TableCell */}
+              {/* TableCell */}
               <TableCell>4444</TableCell>
             </TableRow>
 
