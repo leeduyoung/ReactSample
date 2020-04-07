@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import Header from "./layouts/Header";
 import Home from "./pages/home/Home";
 import CreateProduct from "./pages/create-product/CreateProduct";
+import TooltipComponent from "./pages/tooltip/Tooltip";
 
 export default [
   {
@@ -23,7 +24,12 @@ export default [
         path: "/create-product",
         exact: true,
         component: CreateProduct
-      }
+      },
+      {
+        path: "/tooltip",
+        exact: true,
+        component: TooltipComponent
+      },
     ]
   }
 ];

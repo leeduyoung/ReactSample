@@ -3,9 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Typography,
   TextField,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
   Button,
   ExpansionPanel,
   ExpansionPanelSummary,
@@ -17,7 +14,6 @@ import {
   EnhancedGridRightItem
 } from "../../components/enhanced-grid-layout/EnhancedGridLayout";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import AddIcon from "@material-ui/icons/Add";
 
 const useStyles = makeStyles(theme => ({
   experienceDetailContainer: {
@@ -398,142 +394,6 @@ const RenderBasic = ({ basic, onBasicChange }) => {
               />
             </EnhancedGridRightItem>
           </EnhancedGridContainer>
-        </div>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
-  );
-};
-
-/**
- * 가격정보
- */
-const RenderPrice = () => {
-  const classes = useStyles();
-
-  return (
-    <ExpansionPanel>
-      <ExpansionPanelSummary
-        className={classes.expansionPanelSummary}
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel2a-content"
-        id="panel2a-header"
-      >
-        <Typography variant={"h5"}>가격정보*</Typography>
-      </ExpansionPanelSummary>
-
-      <ExpansionPanelDetails>
-        <div className={classes.content}>
-          <EnhancedGridContainer>
-            <EnhancedGridLeftItem>공급가(원)</EnhancedGridLeftItem>
-            <EnhancedGridRightItem>
-              <TextField
-                id="supplyPrice"
-                name="supplyPrice"
-                label="supplyPrice"
-                variant="outlined"
-                type="number"
-                fullWidth={true}
-                value={""}
-                onChange={null}
-                required
-              />
-            </EnhancedGridRightItem>
-
-            <EnhancedGridLeftItem>할증율(%)</EnhancedGridLeftItem>
-            <EnhancedGridRightItem>
-              <TextField
-                id="extraRate"
-                name="extraRate"
-                label="extraRate"
-                variant="outlined"
-                type="number"
-                fullWidth={true}
-                value={""}
-                onChange={null}
-              />
-            </EnhancedGridRightItem>
-
-            <EnhancedGridLeftItem>할인율(%)</EnhancedGridLeftItem>
-            <EnhancedGridRightItem>
-              <TextField
-                id="discountRate"
-                name="discountRate"
-                label="discountRate"
-                variant="outlined"
-                type="number"
-                fullWidth={true}
-                value={""}
-                onChange={null}
-              />
-            </EnhancedGridRightItem>
-          </EnhancedGridContainer>
-        </div>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
-  );
-};
-
-/**
- * 옵션정보
- */
-const RenderOption = () => {
-  const classes = useStyles();
-  const [options, setOptions] = React.useState([]);
-  console.log("options: ", options);
-
-  return (
-    <ExpansionPanel>
-      <ExpansionPanelSummary
-        className={classes.expansionPanelSummary}
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel3a-content"
-        id="panel3a-header"
-      >
-        <Typography variant={"h5"}>옵션정보*</Typography>
-      </ExpansionPanelSummary>
-
-      <ExpansionPanelDetails>
-        <div className={classes.content}>
-          {options.map((option, index) => {
-            return (
-              <div className={classes.option} key={index}>
-                옵션 {index + 1}
-                {/* {option.optionItems.map((item, index) => {
-                  return (
-                    <div className={classes.optionItem} key={index}>
-                      옵션 아이템 {index + 1}
-                    </div>
-                  )
-                })}
-                <Button
-                  style={{marginTop: 16}}
-                  className={classes.buttonItem}
-                  color="primary"
-                  variant="outlined"
-                  type="submit"
-                  endIcon={<AddIcon />}
-                  onClick={() => {}}
-                >
-                  {"옵션 아이템 추가"}
-                </Button> */}
-              </div>
-            );
-          })}
-          <Button
-            style={{ marginTop: 16 }}
-            className={classes.buttonItem}
-            color="primary"
-            variant="outlined"
-            type="submit"
-            endIcon={<AddIcon />}
-            onClick={() => {
-              let newOptions = options.concat();
-              newOptions.push({ id: options.length, optionItems: [] });
-              setOptions(newOptions);
-            }}
-          >
-            {"옵션추가"}
-          </Button>
         </div>
       </ExpansionPanelDetails>
     </ExpansionPanel>

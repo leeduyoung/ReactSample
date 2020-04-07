@@ -7,7 +7,7 @@ import SimpleTable4 from "../../components/SimpleTable4";
 import CustomTransferList from "../../components/transfer-list/CustomTransferList";
 import TransferList from "../../components/transfer-list/TransferList";
 import TestModal from "../../components/layout/TestModal";
-import GridLayout from "../../components/layout/GridLayout";
+// import GridLayout from "../../components/layout/GridLayout";
 
 const Home = () => {
   const [testModal, setTestModal] = React.useState(false);
@@ -15,7 +15,7 @@ const Home = () => {
   return (
     <div className="App">
       {"그리드 레이아웃"}
-      <GridLayout />
+      {/* <GridLayout /> */}
 
       {/*
         한줄로 쭉 연결된 긴 텍스트의 경우 overflow-wrap: break-word; 속성을 사용하여
