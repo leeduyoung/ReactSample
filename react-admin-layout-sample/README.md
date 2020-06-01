@@ -1,10 +1,12 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## install plugin list
+## Install plugin list
 
 1. react-router-dom
 2. react-router-config
 3. @material-ui/core
+4. @material-ui/icons
+5. clsx
 
 ## Available Scripts
 
