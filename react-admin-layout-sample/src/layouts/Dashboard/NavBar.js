@@ -1,8 +1,9 @@
 import React from "react";
-import { makeStyles, Hidden, Drawer } from "@material-ui/core";
+import { makeStyles, Hidden, Drawer, List, ListSubheader } from "@material-ui/core";
 import clsx from "clsx";
 import NavConfig from "./NavConfig";
-import { useLocation } from "react-router-dom";
+import { useLocation, matchPath } from "react-router-dom";
+import NavItem from "src/components/NavItem";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -131,8 +132,54 @@ function NavBar({
 
 export default NavBar;
 
-function renderNavItems() {
+function renderNavItems({items, subheader, key, ...rest}) {
+  // console.log({items, subheader, key, ...rest})
   return (
-    <div>renderNavItems</div>
+    <List key={key}>
+      {subheader && <ListSubheader>{subheader}</ListSubheader>}
+      {items.reduce((acc, item) => reduceChildRoutes({ acc, item, ...rest }), [])}
+    </List>
   )
+}
+
+function reduceChildRoutes({acc, pathname, item, depth = 0}) {
+  console.log({acc, pathname, item, depth})
+
+  if (item.items) {
+    const open = matchPath(pathname, {
+      path: item.href,
+      exact: false
+    })
+
+    acc.push(
+      <NavItem
+        key={item.href}
+        depth={depth}
+        icon={item.icon}
+        label={item.label}
+        open={Boolean(open)}
+        title={item.title}
+      >
+        {renderNavItems({
+          depth: depth + 1,
+          pathname,
+          items: item.items
+        })}
+      </NavItem>
+    )
+  }
+  else {
+    acc.push(
+      <NavItem
+        key={item.href}
+        href={item.href}
+        depth={depth}
+        icon={item.icon}
+        label={item.label}
+        title={item.title}        
+      />
+    )
+  }
+
+  return acc
 }
