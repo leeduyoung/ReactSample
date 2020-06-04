@@ -1,8 +1,10 @@
 import React from "react"
 import PropTypes from "prop-types"
 import clsx from "clsx"
-import { makeStyles, ListItem, Button } from "@material-ui/core"
+import { makeStyles, ListItem, Button, Collapse } from "@material-ui/core"
 import { Link } from "react-router-dom"
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 const useStyles = makeStyles(theme => ({
   item: {
@@ -39,6 +41,11 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     marginRight: theme.spacing(1)
   },  
+  expandIcon: {
+    marginLeft: 'auto',
+    height: 16,
+    width: 16
+  },  
   label: {
     display: 'flex',
     alignItems: 'center',
@@ -74,6 +81,35 @@ function NavItem({
   const style = {
     paddingLeft
   };
+
+  if (children) 
+    return (
+      <ListItem
+        key={title}
+        className={clsx(classes.item)}
+      >
+        <Button
+          className={classes.button}
+          onClick={() => setOpen(prevOpen => !prevOpen)}
+          style={style}
+        >
+          {Icon && <Icon className={classes.icon} />}
+          {title}
+          {open ? (
+            <ExpandLessIcon
+              className={classes.expandIcon}
+              color="inherit"
+            />
+          ) : (
+            <ExpandMoreIcon
+              className={classes.expandIcon}
+              color="inherit"
+            />
+          )}          
+        </Button>
+        <Collapse in={open}>{children}</Collapse>
+      </ListItem>
+    )
 
   return (
     <ListItem
