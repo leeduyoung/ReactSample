@@ -2,6 +2,10 @@ import React, { lazy } from "react";
 import { Redirect } from "react-router-dom";
 import DashboardLayout from "./layouts/Dashboard";
 import PresentationPage from "./pages/Presentation";
+import OverviewPage from "./pages/Overview";
+import DashboardDefaultPage from "./pages/Dashboard/Default"
+import DashboardAnalyticsPage from "./pages/Dashboard/Analytics"
+import ChangelogPage from "./pages/Changelog"
 import ErrorLayout from "./layouts/Error";
 
 export default [
@@ -38,6 +42,26 @@ export default [
     route: "*",
     component: DashboardLayout,
     routes: [
+      {
+        path: "/overview",
+        exact: true,
+        component: OverviewPage,
+      },
+      {
+        path: "/dashboards/default",
+        exact: true,
+        component: DashboardDefaultPage,
+      },
+      {
+        path: "/dashboards/analytics",
+        exact: true,
+        component: DashboardAnalyticsPage,
+      },
+      {
+        path: "/changelog",
+        exact: true,
+        component: ChangelogPage,
+      },
       {
         path: "/presentation",
         exact: true,
